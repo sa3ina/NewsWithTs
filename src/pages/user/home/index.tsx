@@ -24,9 +24,9 @@ function Home({}: Props) {
   let newsData = news;
   console.log(newsData);
   useEffect(() => {
-    // Fetch news data when component mounts
     dispatch(fetchNews());
   }, [dispatch]);
+
   function formatDate(dateString: string): string {
     const options = { month: "long", day: "numeric", year: "numeric" };
     const date = new Date(dateString);
