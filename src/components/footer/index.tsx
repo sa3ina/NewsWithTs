@@ -481,7 +481,7 @@ const Footer = () => {
                       }}
                       to="/"
                     >
-                      TRNN
+                      CONTACT US
                     </Link>
                   </li>
                   <li style={{ marginBottom: "10px" }}>
