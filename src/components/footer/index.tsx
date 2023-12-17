@@ -135,7 +135,7 @@ const Footer = () => {
                         fontSize: "17px",
                       }}
                     >
-                      About The Real News Network
+                      About The Real News Netw.
                     </Link>
                   </li>
                   <li style={{ marginBottom: "10px" }}>
@@ -280,7 +280,7 @@ const Footer = () => {
                         fontSize: "17px",
                       }}
                     >
-                      Movements and Politics: International
+                      Movements and Politics: Int.
                     </Link>
                   </li>
                   <li style={{ marginBottom: "10px" }}>
@@ -387,7 +387,7 @@ const Footer = () => {
                         fontSize: "17px",
                       }}
                     >
-                      Edge of Sports with Dave Zirin
+                      Edge of Sports with Dave
                     </Link>
                   </li>
                   <li style={{ marginBottom: "10px" }}>
@@ -494,7 +494,7 @@ const Footer = () => {
                         fontSize: "17px",
                       }}
                     >
-                      IWT - The Real News Network
+                      IWT - The Real News Netw.
                     </Link>
                   </li>
                   <li style={{ marginBottom: "10px" }}>
