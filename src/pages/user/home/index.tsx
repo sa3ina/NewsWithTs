@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid } from "@mui/material";
 import { Paper } from "@mui/material";
 import { Box } from "@mui/material";
@@ -12,28 +12,62 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { fetchNews } from "../../../redux/slices/newsSlice";
+import { likeDislikeNews } from "../../../redux/slices/newsSlice";
+
 import Link from "@mui/material";
 type Props = {};
 
 function Home({}: Props) {
+  const [sortedNews, setSortedNews] = useState<string[]>([]);
+  const [clicked, SetClicked] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { news, loading, error } = useSelector(
     (state: RootState) => state.news
   );
 
   let newsData = news;
-  console.log(newsData);
+  // console.log(newsData);
   useEffect(() => {
     dispatch(fetchNews());
   }, [dispatch]);
+  function sortNewsByDate(newsArray) {
+    return newsArray.slice().sort((a, b) => {
+      return (
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      );
+    });
+  }
+
+  useEffect(() => {
+    let sortedByDate = sortNewsByDate(news);
+    setSortedNews(sortedByDate);
+  }, [news]);
 
   function formatDate(dateString: string): string {
-    const options = { month: "long", day: "numeric", year: "numeric" };
+    const options = {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+    };
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", options);
   }
   const trendingNews = newsData.filter((item) => item.category === "trending");
-  console.log(trendingNews);
+
+  const handleTrendingClick = () => {
+    const trending = news.filter((item) => item.category === "trending");
+    setSortedNews(trending);
+    SetClicked(true);
+    console.log(sortedNews);
+  };
+  const handleLatestClick = () => {
+    const latest = news.filter((item) => item.category === "latest");
+    setSortedNews(latest);
+    SetClicked(true);
+    console.log(sortedNews);
+  };
+
   return (
     <Container maxWidth="xl">
       {" "}
@@ -43,15 +77,47 @@ function Home({}: Props) {
           padding: { xl: "0 90px", md: "0 90px" },
         }}
       >
+        {" "}
+        <Box sx={{ display: "flex", gap: "30px", padding: "30px 0" }}>
+          <Typography sx={{ fontWeight: "700" }}>Categories:</Typography>
+          <Typography>
+            <button
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                fontSize: "16px",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+              onClick={handleLatestClick}
+            >
+              Latest
+            </button>
+          </Typography>
+          <Typography>
+            <button
+              style={{
+                border: "none",
+                backgroundColor: "transparent",
+                fontSize: "16px",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+              onClick={handleTrendingClick}
+            >
+              Trending
+            </button>
+          </Typography>
+        </Box>
         <Grid container spacing={5}>
           <Grid item xs={12} md={8}>
-            {newsData &&
-              newsData.map((elem) => {
+            {sortedNews &&
+              sortedNews.map((elem) => {
                 return (
                   <Box
                     sx={{
                       display: { md: "flex", xs: "block" },
-                      gap: "30px",
+                      gap: "25px",
                       marginBottom: "30px",
                     }}
                   >
@@ -115,22 +181,46 @@ function Home({}: Props) {
                               margin: "0",
                             }}
                           >
-                            <FontAwesomeIcon
-                              icon={faEye}
-                              style={{ color: "#CCCCCC", marginRight: "5px" }}
-                            />
-                            <span>0</span>
+                            <button
+                              style={{
+                                cursor: "pointer",
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faEye}
+                                style={{ color: "#CCCCCC", marginRight: "5px" }}
+                              />
+                              <span>{elem.seen}</span>
+                            </button>
                           </Box>
                           <Box
                             sx={{
                               margin: "0",
                             }}
                           >
-                            <FontAwesomeIcon
-                              icon={faThumbsUp}
-                              style={{ color: "#CCCCCC", marginRight: "5px" }}
-                            />
-                            <span>0</span>
+                            <button
+                              style={{
+                                cursor: "pointer",
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={() => {
+                                dispatch(
+                                  likeDislikeNews({
+                                    newsId: elem.id,
+                                    action: "like",
+                                  })
+                                );
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faThumbsUp}
+                                style={{ color: "#CCCCCC", marginRight: "5px" }}
+                              />
+                              <span>{elem.like}</span>
+                            </button>
                           </Box>
 
                           <Box
@@ -138,11 +228,27 @@ function Home({}: Props) {
                               margin: "0",
                             }}
                           >
-                            <FontAwesomeIcon
-                              icon={faThumbsDown}
-                              style={{ color: "#CCCCCC", marginRight: "5px" }}
-                            />
-                            <span>0</span>
+                            <button
+                              style={{
+                                cursor: "pointer",
+                                border: "none",
+                                backgroundColor: "transparent",
+                              }}
+                              onClick={() => {
+                                dispatch(
+                                  likeDislikeNews({
+                                    newsId: elem.id,
+                                    action: "dislike",
+                                  })
+                                );
+                              }}
+                            >
+                              <FontAwesomeIcon
+                                icon={faThumbsDown}
+                                style={{ color: "#CCCCCC", marginRight: "5px" }}
+                              />
+                              <span>{elem.dislike}</span>
+                            </button>
                           </Box>
                         </Box>
                         <Typography

@@ -5,21 +5,21 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import { Link } from "react-router-dom";
-
+import { Box } from "@mui/material";
 const Dashboard = () => {
   return (
     <Grid item xs={12} md={4} lg={3} style={{ height: "100%" }}>
-      <Paper style={{ backgroundColor: "#fff", height: "100%", width: "100%" }}>
+      <Box style={{ backgroundColor: "#fff", height: "100%", width: "100%" }}>
         <div style={{ padding: "16px" }}>
           <div
             style={{
               marginBottom: "16px",
             }}
           >
-            <i className="bi bi-bootstrap-fill fs-4"></i>
+            {/* <i className="bi bi-bootstrap-fill fs-4"></i> */}
             <Typography
               variant="h6"
-              className="brand-name fs-4"
+              // className="brand-name fs-4"
               style={{ fontSize: "30px", marginLeft: "8px" }}
             >
               Admin Panel
@@ -28,7 +28,7 @@ const Dashboard = () => {
           <hr className="text-dark" />
           <List component="nav">
             <ListItem>
-              <i className="bi bi-speedometer2 fs-5 me-3"></i>
+              {/* <i className="bi bi-speedometer2 fs-5 me-3"></i> */}
               <Typography variant="subtitle1">
                 <Link
                   to="/admin"
@@ -43,7 +43,7 @@ const Dashboard = () => {
               </Typography>
             </ListItem>
             <ListItem>
-              <i className="bi bi-house fs-5 me-3"></i>
+              {/* <i className="bi bi-house fs-5 me-3"></i> */}
               <Typography variant="subtitle1">
                 <Link
                   to="/admin/adminNews"
@@ -59,7 +59,7 @@ const Dashboard = () => {
               </Typography>
             </ListItem>
             <ListItem>
-              <i className="bi bi-house fs-5 me-3"></i>
+              {/* <i className="bi bi-house fs-5 me-3"></i> */}
               <Typography variant="subtitle1">
                 <Link
                   to="/admin/addNews"
@@ -75,7 +75,7 @@ const Dashboard = () => {
             </ListItem>
           </List>
         </div>
-      </Paper>
+      </Box>
     </Grid>
   );
 };

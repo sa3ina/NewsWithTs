@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -20,31 +20,37 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faTelegram } from "@fortawesome/free-brands-svg-icons";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { RootState } from "../../redux/store";
+import { fetchNews } from "../../redux/slices/newsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function ResponsiveAppBar() {
+  const [search, setSearch] = useState<string>("");
+  const [showResults, setShowResults] = useState<boolean>(false);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
+  const dispatch = useDispatch();
+  const { news, loading, error } = useSelector(
+    (state: RootState) => state.news
   );
+  let newsData = news;
+  useEffect(() => {
+    dispatch(fetchNews());
+  }, [dispatch]);
+  console.log(newsData);
 
+  const filteredNews = newsData.filter((item) =>
+    item.title.toLowerCase().includes(search.toLowerCase())
+  );
+  console.log(filteredNews);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -53,7 +59,7 @@ function ResponsiveAppBar() {
       sx={{
         backgroundColor: "black",
         borderBottom: { xs: "none", md: "20px solid #CCCCCC" },
-        marginBottom: "80px",
+        marginBottom: "30px",
         padding: { xl: "0 90px", md: "0 90px" },
       }}
     >
@@ -117,9 +123,9 @@ function ResponsiveAppBar() {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Latest</Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
+              {/* <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">TRENDING</Typography>
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">About</Typography>
               </MenuItem>
@@ -144,7 +150,7 @@ function ResponsiveAppBar() {
             >
               LATEST
             </Button>
-            <Button
+            {/* <Button
               onClick={handleCloseNavMenu}
               sx={{
                 my: 2,
@@ -157,21 +163,23 @@ function ResponsiveAppBar() {
               }}
             >
               TRENDING
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{
-                my: 2,
-                color: "white",
-                display: "block",
-                fontWeight: "900",
-                "&:hover": {
-                  color: "#CCCCCC",
-                },
-              }}
-            >
-              ABOUT
-            </Button>
+            </Button> */}
+            <Link to="/about">
+              <Button
+                onClick={handleCloseNavMenu}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  fontWeight: "900",
+                  "&:hover": {
+                    color: "#CCCCCC",
+                  },
+                }}
+              >
+                ABOUT
+              </Button>
+            </Link>
             <Button
               onClick={handleCloseNavMenu}
               sx={{
@@ -193,8 +201,48 @@ function ResponsiveAppBar() {
               color="inherit"
               sx={{ position: "relative" }}
             >
+              <input
+                type="text"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setShowResults(!!e.target.value);
+                }}
+              />{" "}
               <SearchIcon />
             </IconButton>
+
+            <div
+              style={{
+                position: "absolute",
+                top: "40px",
+                left: "0",
+                width: "100%",
+                background: "white",
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+                zIndex: "4556",
+                color: "black",
+                marginTop: "30px",
+                display: showResults ? "block" : "none",
+              }}
+            >
+              <ul>
+                {filteredNews.map((result, index) => (
+                  <a
+                    href={result.url}
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
+                    <li
+                      style={{ listStyleType: "none", padding: "3px" }}
+                      key={index}
+                    >
+                      {" "}
+                      <SearchIcon style={{ height: "20px" }} />
+                      {result.title}
+                    </li>
+                  </a>
+                ))}
+              </ul>
+            </div>
           </Box>
           <Box
             style={{ position: "absolute", top: "70px", right: "15px" }}
