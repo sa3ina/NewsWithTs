@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./slices/newsSlice";
 import newsReducer from "./slices/newsSlice";

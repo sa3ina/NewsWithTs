@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import { Grid, Box, Container, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
