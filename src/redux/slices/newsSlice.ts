@@ -38,8 +38,10 @@ const initialState: NewsState = {
 
 export const fetchNews = createAsyncThunk("news/fetchNews", async () => {
   try {
-    const response = await axios.get<News[]>(" http://localhost:3000/articles");
-    console.log(response.data);
+    const response = await axios.get<News[]>(
+      "https://newsapi-gze9.onrender.com/articles"
+    );
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error("Failed to fetch news data");
@@ -49,7 +51,7 @@ export const deleteNews = createAsyncThunk(
   "news/deleteNews",
   async (id, { getState }) => {
     try {
-      await axios.delete(`http://localhost:3000/articles/${id}`);
+      await axios.delete(`https://newsapi-gze9.onrender.com/articles/${id}`);
 
       const currentState = getState() as RootState;
       const updatedNews = currentState.news.news.filter(
@@ -65,7 +67,7 @@ export const deleteNews = createAsyncThunk(
 export const addNews = createAsyncThunk("news/addNews", async (newItem) => {
   try {
     const response = await axios.post(
-      `http://localhost:3000/articles`,
+      `https://newsapi-gze9.onrender.com/articles`,
       newItem
     );
     return response.data;
@@ -79,7 +81,7 @@ export const likeDislikeNews = createAsyncThunk(
     try {
       const { newsId, action } = payload;
 
-      await axios.patch(`http://localhost:3000/articles/${newsId}`);
+      await axios.patch(`https://newsapi-gze9.onrender.com/articles/${newsId}`);
 
       return { newsId, action };
     } catch (error) {

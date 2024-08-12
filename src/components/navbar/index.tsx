@@ -40,12 +40,12 @@ function ResponsiveAppBar() {
   useEffect(() => {
     dispatch(fetchNews());
   }, [dispatch]);
-  console.log(newsData);
+  // console.log(newsData);
 
   const filteredNews = newsData.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase())
   );
-  console.log(filteredNews);
+  // console.log(filteredNews);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };

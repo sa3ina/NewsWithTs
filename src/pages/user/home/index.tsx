@@ -60,13 +60,13 @@ function Home({}: Props) {
     const trending = news.filter((item) => item.category === "trending");
     setSortedNews(trending);
     SetClicked(true);
-    console.log(sortedNews);
+    // console.log(sortedNews);
   };
   const handleLatestClick = () => {
     const latest = news.filter((item) => item.category === "latest");
     setSortedNews(latest);
     SetClicked(true);
-    console.log(sortedNews);
+    // console.log(sortedNews);
   };
 
   return (
